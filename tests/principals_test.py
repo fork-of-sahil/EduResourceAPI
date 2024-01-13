@@ -1,3 +1,4 @@
+import json
 from core.models.assignments import Assignment, AssignmentStateEnum, GradeEnum
 from core import db
 
@@ -69,6 +70,5 @@ def test_regrade_assignment(client, h_principal):
     assignment = Assignment.get_by_id(3)
     assignment.grade = GradeEnum.A.value  # Reset the value to its initial state
     db.session.commit()
-
 
 

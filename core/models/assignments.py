@@ -98,7 +98,6 @@ class Assignment(db.Model):
         db.session.flush()
 
         return assignment
-        principal = Principal.query.first()
     
     @classmethod
     def get_assignments_by_student(cls, student_id):
