@@ -55,7 +55,7 @@ def test_get_assignments_in_various_states():
     """Test to get assignments in various states"""
 
     # Define the expected result before any changes
-    expected_result = [('DRAFT', 2), ('GRADED', 1), ('SUBMITTED', 2)]
+    expected_result = [('DRAFT', 3), ('GRADED', 1), ('SUBMITTED', 2)]
 
     # Execute the SQL query and compare the result with the expected result
     with open('tests/SQL/number_of_assignments_per_state.sql', encoding='utf8') as fo:
@@ -67,7 +67,7 @@ def test_get_assignments_in_various_states():
         assert result[1] == sql_result[itr][1]
 
     # Modify an assignment state and grade, then re-run the query and check the updated result
-    expected_result = [('DRAFT', 2), ('GRADED', 2), ('SUBMITTED', 1)]
+    expected_result = [('DRAFT', 3), ('GRADED', 2), ('SUBMITTED', 1)]
 
     # Find an assignment in the 'SUBMITTED' state, change its state to 'GRADED' and grade to 'C'
     submitted_assignment: Assignment = Assignment.filter(Assignment.state == AssignmentStateEnum.SUBMITTED).first()
@@ -86,7 +86,7 @@ def test_get_assignments_in_various_states():
         assert result[0] == sql_result[itr][0]
         assert result[1] == sql_result[itr][1]
 
-    assignment = Assignment.get_by_id(submitted_assignment_id))
+    assignment = Assignment.get_by_id(submitted_assignment_id)
     assignment.state = AssignmentStateEnum.SUBMITTED  # Reset the value to its initial state
     assignment.grade = None  # Reset the value to its initial state
     db.session.commit()

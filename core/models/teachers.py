@@ -1,5 +1,7 @@
 from core import db
+from core.apis.decorators import AuthPrincipal
 from core.libs import helpers
+from core.libs import assertions
 
 
 class Teacher(db.Model):
@@ -11,3 +13,26 @@ class Teacher(db.Model):
 
     def __repr__(self):
         return '<Teacher %r>' % self.id
+    
+
+    @classmethod
+    def filter(cls, *criterion):
+        db_query = db.session.query(cls)
+        return db_query.filter(*criterion)
+    
+
+    @classmethod
+    def get_by_id(cls, _id):
+        return cls.filter(cls.id == _id).first()
+    
+
+    @classmethod
+    def validate(cls, auth_principal : AuthPrincipal):
+        teacher = cls.get_by_id(auth_principal.teacher_id)
+        assertions.assert_found(teacher, 'No teacher with this id was found')
+        return teacher.user_id == auth_principal.user_id
+    
+
+    @classmethod
+    def get_teachers_by_principal(cls):
+        return cls.filter().all()
