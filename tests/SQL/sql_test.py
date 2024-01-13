@@ -62,7 +62,6 @@ def test_get_assignments_in_various_states():
         sql = fo.read()
 
     sql_result = db.session.execute(text(sql)).fetchall()
-    print(sql_result)
     for itr, result in enumerate(expected_result):
         assert result[0] == sql_result[itr][0]
         assert result[1] == sql_result[itr][1]
@@ -73,7 +72,6 @@ def test_get_assignments_in_various_states():
     # Find an assignment in the 'SUBMITTED' state, change its state to 'GRADED' and grade to 'C'
     submitted_assignment: Assignment = Assignment.filter(Assignment.state == AssignmentStateEnum.SUBMITTED).first()
     submitted_assignment_id = submitted_assignment.id
-    print(submitted_assignment_id)
     submitted_assignment.state = AssignmentStateEnum.GRADED
     submitted_assignment.grade = GradeEnum.C
 
@@ -84,13 +82,11 @@ def test_get_assignments_in_various_states():
 
     # Execute the SQL query again and compare the updated result with the expected result
     sql_result = db.session.execute(text(sql)).fetchall()
-    print(sql_result)
     for itr, result in enumerate(expected_result):
         assert result[0] == sql_result[itr][0]
         assert result[1] == sql_result[itr][1]
 
     assignment = Assignment.get_by_id(submitted_assignment_id))
-    print(assignment)
     assignment.state = AssignmentStateEnum.SUBMITTED  # Reset the value to its initial state
     assignment.grade = None  # Reset the value to its initial state
     db.session.commit()
