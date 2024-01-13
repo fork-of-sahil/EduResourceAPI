@@ -54,3 +54,19 @@ pytest -vvv -s tests/
 # pytest --cov
 # open htmlcov/index.html
 ```
+
+### Run Docker
+
+```
+docker-compose build
+docker-compose up
+```
+
+## Screenshots
+
+### Test Coverage (95%)
+![Test Coverage](https://raw.githubusercontent.com/fork-of-sahil/fyle-interview-intern-backend/main/screenshots/code_coverage.png)
+
+### Test Cases Passed (41 Test Cases)
+![Test Case Pass](https://raw.githubusercontent.com/fork-of-sahil/fyle-interview-intern-backend/main/screenshots/testcases_pass.png)
+
