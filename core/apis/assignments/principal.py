@@ -54,17 +54,14 @@ def list_teachers(p):
 def grade_assignment(p, incoming_payload):
     """Grade or re-grade an assignment"""
     grade_assignment_payload = AssignmentGradeSchema().load(incoming_payload)
+    grade_assignment = Assignment.mark_grade_by_principal(
+        _id=grade_assignment_payload.id,
+        grade=grade_assignment_payload.grade,
+        auth_principal=p
+    )
+    db.session.commit()
+    grade_assignment_dump = AssignmentSchema().dump(grade_assignment)
     
-    id = grade_assignment_payload.id
-    grade = grade_assignment_payload.grade
+    return APIResponse.respond(data=grade_assignment_dump)
     
-    assignment = Assignment.query.get(id)
-    if assignment and not assignment.is_draft():
-        assignment.grade = grade
-        assignment.state = AssignmentStateEnum.GRADED
-        db.session.commit()
-        graded_assignment_dump = AssignmentSchema().dump(assignment)
-        return APIResponse.respond(data=graded_assignment_dump)
-    else:
-        return APIResponse.respond(data=None, status=400)
 

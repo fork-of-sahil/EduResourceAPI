@@ -24,28 +24,12 @@ def list_assignments(p):
 @decorators.authenticate_principal
 def upsert_assignment(p, incoming_payload):
     """Create or Edit an assignment"""
-
-    assignment_data = incoming_payload
-    assignment_id = assignment_data.get('id')
-    content = assignment_data.get('content')
-
-    if not content:
-        return APIResponse.respond(data='Content cannot be null', status=400)
-
-    if assignment_id:
-        # Update the assignment
-        assignment = Assignment.query.get(assignment_id)
-        if not assignment:
-            return APIResponse.respond(data='Assignment not found', status=404)
-        assignment.content = content
-        
-    else:
-        # Create a new assignment
-        assignment = Assignment(student_id=p.student_id, content=assignment_data.get('content'))
-        db.session.add(assignment)
-
+    assignment = AssignmentSchema().load(incoming_payload)
+    assignment.student_id = p.student_id
+    
+    upserted_assignment = Assignment.upsert(assignment)
     db.session.commit()
-    upserted_assignment_dump = AssignmentSchema().dump(assignment)
+    upserted_assignment_dump = AssignmentSchema().dump(upserted_assignment)
     return APIResponse.respond(data=upserted_assignment_dump)
 
 

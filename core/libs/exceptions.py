@@ -10,3 +10,6 @@ class FyleError(Exception):
         res = dict()
         res['message'] = self.message
         return res
+    
+    def __str__(self):
+        return self.message

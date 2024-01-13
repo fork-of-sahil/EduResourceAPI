@@ -1,5 +1,8 @@
 from .exceptions import FyleError
 
+def __str__(self):
+        return self.message
+
 
 def base_assert(error_code, msg):
     raise FyleError(status_code=error_code, message=msg)
