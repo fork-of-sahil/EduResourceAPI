@@ -72,7 +72,7 @@ class Assignment(db.Model):
 
         return assignment
 
-
+    
     @classmethod
     def mark_grade(cls, _id, grade, auth_principal: AuthPrincipal):
         assignment = Assignment.get_by_id(_id)

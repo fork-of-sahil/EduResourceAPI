@@ -65,17 +65,21 @@ def upgrade():
     db.session.flush()
 
     assignment_1 = Assignment(student_id=student_1.id, content='ESSAY T1')
-    assignment_2 = Assignment(student_id=student_1.id, content='THESIS T1')
-    assignment_3 = Assignment(student_id=student_2.id, content='ESSAY T2')
+    assignment_2 = Assignment(student_id=student_2.id, content='ESSAY T2')
+
+    assignment_3 = Assignment(student_id=student_1.id, content='THESIS T1')
     assignment_4 = Assignment(student_id=student_2.id, content='THESIS T2')
 
     assignment_5 = Assignment(student_id=student_1.id, content='SOLUTION T1')
+    assignment_6 = Assignment(student_id=student_2.id, content='SOLUTION T2')
+
 
     db.session.add(assignment_1)
     db.session.add(assignment_2)
     db.session.add(assignment_3)
     db.session.add(assignment_4)
     db.session.add(assignment_5)
+    db.session.add(assignment_6)
 
     db.session.flush()
 
@@ -86,9 +90,15 @@ def upgrade():
     )
 
     Assignment.submit(
-        _id=assignment_3.id,
+        _id=assignment_2.id,
         teacher_id=teacher_2.id,
         auth_principal=AuthPrincipal(user_id=student_2.user_id, student_id=student_2.id)
+    )
+
+    Assignment.submit(
+        _id=assignment_3.id,
+        teacher_id=teacher_1.id,
+        auth_principal=AuthPrincipal(user_id=student_1.user_id, student_id=student_1.id)
     )
 
     Assignment.submit(
@@ -96,6 +106,20 @@ def upgrade():
         teacher_id=teacher_2.id,
         auth_principal=AuthPrincipal(user_id=student_2.user_id, student_id=student_2.id)
     )
+
+    Assignment.mark_grade(
+        _id=assignment_1.id,
+        grade='C',
+        auth_principal=AuthPrincipal(user_id=teacher_1.user_id, teacher_id=teacher_1.id)
+    )
+
+    Assignment.mark_grade(
+        _id=assignment_4.id,
+        grade='A',
+        auth_principal=AuthPrincipal(user_id=teacher_2.user_id, teacher_id=teacher_2.id)
+    )
+
+   
 
     db.session.commit()
     # ### end Alembic commands ###
