@@ -70,3 +70,5 @@ docker-compose up
 ### Test Cases Passed (41 Test Cases)
 ![Test Case Pass](https://raw.githubusercontent.com/fork-of-sahil/fyle-interview-intern-backend/main/screenshots/testcases_pass.png)
 
+### Docker Running Screenshot
+![Test Case Pass](https://raw.githubusercontent.com/fork-of-sahil/fyle-interview-intern-backend/main/screenshots/docker.png)
