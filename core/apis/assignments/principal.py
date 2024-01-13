@@ -2,7 +2,7 @@ from flask import Blueprint
 from core import db
 from core.apis import decorators
 from core.apis.responses import APIResponse
-from core.models.assignments import Assignment
+from core.models.assignments import Assignment, AssignmentStateEnum
 from core.models.students import Student
 
 from .schema import AssignmentGradeSchema, AssignmentSchema, AssignmentSubmitSchema
@@ -61,6 +61,7 @@ def grade_assignment(p, incoming_payload):
     assignment = Assignment.query.get(id)
     if assignment and not assignment.is_draft():
         assignment.grade = grade
+        assignment.state = AssignmentStateEnum.GRADED
         db.session.commit()
         graded_assignment_dump = AssignmentSchema().dump(assignment)
         return APIResponse.respond(data=graded_assignment_dump)
