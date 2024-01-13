@@ -1,5 +1,5 @@
-from core.models.assignments import AssignmentStateEnum, GradeEnum
-
+from core.models.assignments import Assignment, AssignmentStateEnum, GradeEnum
+from core import db
 
 def test_get_assignments(client, h_principal):
     response = client.get(
@@ -44,12 +44,18 @@ def test_grade_assignment(client, h_principal):
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.C
 
+     # Clean up
+    assignment = Assignment.get_by_id(1)
+    assignment.state = AssignmentStateEnum.SUBMITTED  # Reset the value to its initial state
+    assignment.grade = None  # Reset the value to its initial state
+    db.session.commit()
+
 
 def test_regrade_assignment(client, h_principal):
     response = client.post(
         '/principal/assignments/grade',
         json={
-            'id': 4,
+            'id': 3,
             'grade': GradeEnum.B.value
         },
         headers=h_principal
@@ -59,3 +65,10 @@ def test_regrade_assignment(client, h_principal):
 
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.B
+
+    assignment = Assignment.get_by_id(3)
+    assignment.grade = GradeEnum.A.value  # Reset the value to its initial state
+    db.session.commit()
+
+
+

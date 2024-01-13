@@ -80,8 +80,10 @@ def test_submit_assignment_student_1(client, h_student_1):
     assert data['teacher_id'] == 1
 
     # Clean up
-    assignment = Assignment.query.get(5)
-    assignment.grade = None  # Reset the value to its initial state
+    assignment = Assignment.get_by_id(5)
+    print(assignment)
+    assignment.state = AssignmentStateEnum.DRAFT  # Reset the value to its initial state
+    assignment.teacher_id = None  # Reset the value to its initial state
     db.session.commit()
     
 
