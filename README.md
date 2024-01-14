@@ -53,7 +53,7 @@ pytest --cov --cov-report=html:./result/coverage_re
 ```
 
 ### Test Coverage Report
-You can see the test coverage report at this [link](result/coverage_re/index.html).
+You can see the test coverage report at this [link](https://fork-of-sahil.github.io/EduResourceAPI/).
 
 ### Run Docker
 
