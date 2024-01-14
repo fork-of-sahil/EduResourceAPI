@@ -12,16 +12,16 @@ def transactional_session(request):
 
 def test_get_assignments(client, h_principal):
     response = client.get(
-        '/principal/assignments',
-        headers=h_principal
-    )
+            '/principal/assignments',
+            headers=h_principal
+        )
 
     assert response.status_code == 200
-    data = response.json['data']
-    for assignments in data:
-        for assignment in assignments:
-            assert assignment['state'] in [AssignmentStateEnum.SUBMITTED, AssignmentStateEnum.GRADED]
 
+    data = response.json['data']
+    for assignment in data:
+        assert assignment['state'] in [AssignmentStateEnum.SUBMITTED, AssignmentStateEnum.GRADED]
+        
 def test_grade_assignment_draft_assignment(client, h_principal):
     """
     failure case: If an assignment is in Draft state, it cannot be graded by principal

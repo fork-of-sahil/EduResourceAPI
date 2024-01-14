@@ -1,6 +1,5 @@
 import pytest
-from unittest.mock import Mock, patch
-from core.models.assignments import Assignment, AssignmentStateEnum, GradeEnum
+from core.models.assignments import Assignment, AssignmentStateEnum
 from core.apis.decorators import AuthPrincipal
 
 @pytest.fixture

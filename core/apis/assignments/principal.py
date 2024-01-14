@@ -3,49 +3,19 @@ from core import db
 from core.apis import decorators
 from core.apis.responses import APIResponse
 from core.models.assignments import Assignment, AssignmentStateEnum
-from core.models.students import Student
+from sqlalchemy import or_
+from .schema import AssignmentGradeSchema, AssignmentSchema
 
-from .schema import AssignmentGradeSchema, AssignmentSchema, AssignmentSubmitSchema
-from core.models.teachers import Teacher
 principal_assignments_resources = Blueprint('principal_assignments_resources', __name__)
-
 
 @principal_assignments_resources.route('/assignments', methods=['GET'], strict_slashes=False)
 @decorators.authenticate_principal
 def list_assignments(p):
     """Returns list of graded or submitted assignments"""
-    
-    students = Student.query.all() 
-    students_assignments = []
-    
-    for student in students:
-        assignments = Assignment.get_assignments_by_student(student.id)
-        graded_or_submitted_assignments = [assignment for assignment in assignments if assignment.is_graded() or assignment.is_submitted()]
-        if graded_or_submitted_assignments:
-                assignments_dump = AssignmentSchema().dump(graded_or_submitted_assignments, many=True)
-                students_assignments.append(assignments_dump)
-    
-    return APIResponse.respond(data=students_assignments)
+    submitted_and_graded_assignments = Assignment.filter(or_(Assignment.state == AssignmentStateEnum.SUBMITTED, Assignment.state == AssignmentStateEnum.GRADED)).all()
+    principals_assignments_dump = AssignmentSchema().dump(submitted_and_graded_assignments, many=True)
+    return APIResponse.respond(data=principals_assignments_dump)
 
-
-@principal_assignments_resources.route('/teachers', methods=['GET'], strict_slashes=False)
-@decorators.authenticate_principal
-def list_teachers(p):
-    """Returns list of teachers"""
-    
-    teachers = Teacher.query.all() 
-    teachers_details = []
-    
-    for teacher in teachers:
-        teacher_details = {
-            'id': teacher.id,
-            'user_id': teacher.user_id,
-            'created_at': teacher.created_at,
-            'updated_at': teacher.updated_at,
-        }
-        teachers_details.append(teacher_details)
-    
-    return APIResponse.respond(data=teachers_details)
 
 
 @principal_assignments_resources.route('/assignments/grade', methods=['POST'], strict_slashes=False)

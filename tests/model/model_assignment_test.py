@@ -1,7 +1,5 @@
-import pytest
 from unittest.mock import patch, Mock
-from core.models.assignments import Assignment, AssignmentStateEnum, GradeEnum
-from core.apis.decorators import AuthPrincipal
+from core.models.assignments import Assignment, AssignmentStateEnum
 
 @patch('core.models.assignments.db.session.query')
 def test_get_by_id(mock_query):
