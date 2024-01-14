@@ -1,4 +1,3 @@
-import pytest
 from core.libs.exceptions import FyleError
 
 def test_FyleError():

@@ -1,6 +1,14 @@
-import json
-from core.models.assignments import Assignment, AssignmentStateEnum, GradeEnum
+import pytest
+from core.models.assignments import AssignmentStateEnum, GradeEnum
 from core import db
+
+@pytest.fixture
+def transactional_session(request):
+    """
+    Fixture to start a transaction before a test and rollback after the test.
+    """
+    db.session.begin(subtransactions=True)
+    request.addfinalizer(db.session.rollback)
 
 def test_get_assignments(client, h_principal):
     response = client.get(
@@ -29,7 +37,7 @@ def test_grade_assignment_draft_assignment(client, h_principal):
 
     assert response.status_code == 400
 
-
+@pytest.mark.usefixtures("transactional_session")
 def test_grade_assignment(client, h_principal):
     response = client.post(
         '/principal/assignments/grade',
@@ -45,13 +53,7 @@ def test_grade_assignment(client, h_principal):
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.C
 
-     # Clean up
-    assignment = Assignment.get_by_id(1)
-    assignment.state = AssignmentStateEnum.SUBMITTED  # Reset the value to its initial state
-    assignment.grade = None  # Reset the value to its initial state
-    db.session.commit()
-
-
+@pytest.mark.usefixtures("transactional_session")
 def test_regrade_assignment(client, h_principal):
     response = client.post(
         '/principal/assignments/grade',
@@ -66,9 +68,3 @@ def test_regrade_assignment(client, h_principal):
 
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.B
-
-    assignment = Assignment.get_by_id(3)
-    assignment.grade = GradeEnum.A.value  # Reset the value to its initial state
-    db.session.commit()
-
-
