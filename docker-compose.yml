@@ -6,3 +6,5 @@ services:
       - "7755:7755"
     volumes:
       - .:/app
+    environment:
+      - FLASK_ENV=development
