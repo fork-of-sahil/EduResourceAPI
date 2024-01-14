@@ -1,25 +1,16 @@
-# Fyle Backend Challenge
+# EduResourceAPI (Fyle Backend Challenge)
 
-## Who is this for?
+## Overview
+This Python script uses the Flask framework to create a RESTful API server for a education management system. It imports necessary modules and libraries, including Flask's jsonify for creating JSON responses, marshmallow for data validation and deserialization, and SQLAlchemy for database operations.
 
-This challenge is meant for candidates who wish to intern at Fyle and work with our engineering team. You should be able to commit to at least 6 months of dedicated time for internship.
+The script registers several API endpoints related to different roles in a education system: students, teachers, and principals. Each role has its own set of resources, which are registered under their respective URL prefixes. For example, student-related resources are registered under the '/student' URL prefix.
 
-## Why work at Fyle?
+The root endpoint ('/') is defined to return a JSON response indicating that the server is ready, along with the current UTC time.
 
-Fyle is a fast-growing Expense Management SaaS product. We are ~40 strong engineering team at the moment. 
+The script also includes error handling for exceptions. It defines a global error handler that catches all exceptions. If the exception is an instance of FyleError, a custom exception class, it returns a JSON response with the error message. Other types of exceptions are not handled in this snippet.
 
-We are an extremely transparent organization. Check out our [careers page](https://careers.fylehq.com) that will give you a glimpse of what it is like to work at Fyle. Also, check out our Glassdoor reviews [here](https://www.glassdoor.co.in/Reviews/Fyle-Reviews-E1723235.htm). You can read stories from our teammates [here](https://stories.fylehq.com).
-
-
-## Challenge outline
-
-This challenge involves writing a backend service for a classroom. The challenge is described in detail [here](./Application.md)
-
-
-## What happens next?
-
-You will hear back within 48 hours from us via email. 
-
+### API Doc
+See the [API doc](./API_DOCS.md) for more detail. 
 
 ## Installation
 
@@ -39,6 +30,10 @@ pip install -r requirements.txt
 export FLASK_APP=core/server.py
 rm core/store.sqlite3
 flask db upgrade -d core/migrations/
+
+OR
+
+bash reset_DB.sh
 ```
 ### Start Server
 
@@ -51,9 +46,14 @@ bash run.sh
 pytest -vvv -s tests/
 
 # for test coverage report
-# pytest --cov
-# open htmlcov/index.html
+# pytest --cov 
+pytest --cov --cov-report=html:./result/coverage_re
+
+# open ./result/coverage_re/index.html
 ```
+
+### Test Coverage Report
+You can see the test coverage report at this [link](result/coverage_re/index.html).
 
 ### Run Docker
 
@@ -65,10 +65,22 @@ docker-compose up
 ## Screenshots
 
 ### Test Coverage (95%)
-![Test Coverage](https://raw.githubusercontent.com/fork-of-sahil/fyle-interview-intern-backend/main/screenshots/code_coverage.png)
+![Test Coverage](result/screenshots/code_coverage.png)
 
 ### Test Cases Passed (41 Test Cases)
-![Test Case Pass](https://raw.githubusercontent.com/fork-of-sahil/fyle-interview-intern-backend/main/screenshots/testcases_pass.png)
+![Test Case Pass](result/screenshots/testcases_pass.png)
 
 ### Docker Running Screenshot
-![Test Case Pass](https://raw.githubusercontent.com/fork-of-sahil/fyle-interview-intern-backend/main/screenshots/docker.png)
+![Test Case Pass](result/screenshots//docker.png)
+
+
+# About Me
+
+Hello! 👋 I'm Sahil, a computer science enthusiast with a passion for low-level understanding and fundamentals. My journey spans across diverse domains like Android, Cloud, Cybersecurity, IoT, Web and UI/UX. From coding to exploring the intricacies of technology, I love the challenge of turning concepts into practical solutions. 
+
+### Know More About Me
+
+- [Resume](https://drive.google.com/drive/folders/1B199gG2kvLzAQXVJkyNJSvkWBlOCzwuE?usp=drive_link)
+- [Linkedin](https://www.linkedin.com/in/sahilkamate03/)
+- [GitHub](https://github.com/sahilkamate03)
+- [Cover Letter](https://encouraging-citrus-85c.notion.site/Cover-Letter-4f835aafca8044f99cbbe51e38cb6492)
