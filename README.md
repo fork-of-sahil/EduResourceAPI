@@ -52,6 +52,10 @@ pytest --cov --cov-report=html:./result/coverage_re
 # open ./result/coverage_re/index.html
 ```
 
+**Note:** Pytest will be runned before any commit.
+
+
+
 ### Test Coverage Report
 You can see the test coverage report at this [link](https://fork-of-sahil.github.io/EduResourceAPI/).
 
